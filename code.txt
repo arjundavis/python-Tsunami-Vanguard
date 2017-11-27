@@ -1,0 +1,2 @@
+cd C:\Users\admin\Documents\Python\Lasers GUI standalone
+python lasers_gui.py
