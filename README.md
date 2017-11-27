@@ -19,6 +19,14 @@ Required libraries :
 Consider saying thanks ! --> maxime.pinsard@outlook.com
 
 ------------------------------------------------------------------------------
+To just use the GUI :
+
+- Open a command prompt on windows
+- just ensure in the code that the paths to the .py files are correct
+- copy/paste (right-click, paste) the content of code.txt and press Enter
+- Enjoy !
+
+------------------------------------------------------------------------------
 Copyright to the code is held by the following parties:
 Copyright (C) 2017 Maxime Pinsard, INRS-EMT Varennes
 
