@@ -1,13 +1,13 @@
 # python-Tsunami-Vanguard
-A non-official python GUI for the Spectra Physics' Vanguard and Tsunami laser (and its model lok-to-clock 3932)
+A non-official python GUI for the Spectra Physics' Vanguard and Tsunami laser (and its model lok-to-clock 3930)
 
 -------------------------------------------------------
 Config used for testing : 
 Windows 7
 Python 3.5 (Anaconda 3)
-For Tsunami laser + model lok-to-clock 3932
+For Tsunami laser + model lok-to-clock 3930
 Vanguard laser
-from Spectra Physics
+(lasers from the company Spectra Physics)
 Tried with these lasers CPU only. Maybe adaptable to other lasers
 
 Required libraries :
