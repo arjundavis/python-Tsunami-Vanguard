@@ -1,5 +1,5 @@
 # python-Tsunami-Vanguard
-A non-official python GUI for the Vanguard and the Tsunami laser (and its model lok-to-clock 3932)
+A non-official python GUI for the Spectra Physics' Vanguard and Tsunami laser (and its model lok-to-clock 3932)
 
 -------------------------------------------------------
 Config used for testing : 
