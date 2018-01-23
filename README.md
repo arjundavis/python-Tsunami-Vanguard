@@ -27,6 +27,12 @@ To just use the GUI :
 - Enjoy !
 
 ------------------------------------------------------------------------------
+
+A scrrenshot of the FULL GUI :
+
+![](https://github.com/MaxP92/python-Tsunami-Vanguard/blob/master/images/Capture_GUI.PNG?raw=true)
+
+--------------------------
 Copyright to the code is held by the following parties:
 Copyright (C) 2017 Maxime Pinsard, INRS-EMT Varennes
 
