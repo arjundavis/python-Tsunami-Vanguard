@@ -13,8 +13,10 @@ Tried with these lasers CPU only. Maybe adaptable to other lasers
 Required libraries :
 
 - PyQt5, with QtDesigner to change the GUI 
-- pyVisa-py : http://pyvisa-py.readthedocs.io/en/latest/
-(note that pyVisa is also fine)
+- pySerial
+pySerial works perfectly in V2 version !
+
+(for the V1 version, pyVisa-py was required, note that pyVisa is also fine))
 
 Consider saying thanks ! --> maxime.pinsard@outlook.com
 
