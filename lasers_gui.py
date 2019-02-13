@@ -9,7 +9,7 @@ os.chdir('C:/Users/admin/Documents/Python/Lasers GUI standalone')
 
 from PyQt5 import QtWidgets
 
-import lasers_core
+import lasers_core2
         
 
 if __name__=='__main__':
@@ -23,6 +23,6 @@ if __name__=='__main__':
     sys.excepthook = my_excepthook
     
     app = QtWidgets.QApplication(sys.argv)
-    lasers_window = lasers_core.Lasers_GUI()
+    lasers_window = lasers_core2.Lasers_GUI()
     lasers_window.show()
     sys.exit(app.exec_())
