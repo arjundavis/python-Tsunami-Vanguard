@@ -375,12 +375,14 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.shutter_open_vg_radio.setChecked(False)  # shutter open is checked
 
             self.vanguard.write('CONT:THG:AUTO1')  # turn off the vanguard
+            upd = self.vanguard.query('CONT:THG:AUTO?')
 
-            self.vanguard_status_edt.setText('Laser turned OFF')
+
+            self.vanguard_status_edt.setText('Vanguard autotune in progress')
 
             self.shutter_vanguard_meth()
     
-    @pyqtSlot()        
+    @pyqtSlot()
     def shutter_vanguard_meth(self):
         
         if self.shutter_open_vg_radio.isChecked(): # shutter open is checked
@@ -419,8 +421,10 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vg_stat_lbl.setVisible(False)
             self.vanguard_com_combo.setVisible(False)
             self.vg_expert_chck.setChecked(False)
+            self.vg_autotune_chck.setChecked(False)
             
         self.vg_expert_meth() # hide some buttons
+        self.vg_autotune_meth()
      
     @pyqtSlot()        
     def vg_expert_meth(self):  
@@ -477,7 +481,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vanguard_heatup_progressBar.setVisible(False)
 
         @pyqtSlot()
-        #
+        # thg autotune part of vanguard window
         def vg_autotune_meth(self):
 
             if self.vg_autotune_chck.isChecked():  # thg autotune mode
@@ -486,7 +490,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
                 self.thg_position_duration.setVisible(True)
 
 
-            else:  # no expert mode
+            else:  # no autotune mode
 
                 self.thg_dur_lbl.setVisible(False)
                 self.thg_position_duration.setVisible(False)
