@@ -298,9 +298,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vanguard_status_edt.setText('Laser is ON at full power')
         else:
             self.vanguard_status_edt.setText('Laser is turning on ...')
-        
-    # @pyqtSlot()        
-    # def get_diodes_temp_millenia_meth(self):
+
         
         bb = self.vanguard.query('READ:DIODE1:TEMPerature?')
         temp_diode1 = float(bb[0:len(bb)-3]) # 
@@ -332,6 +330,10 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         # duration 
         bb = self.vanguard.query('READ:DIODE1:HOURs?')
         self.vanguard_duration_edt.setText('Control unit ON for %s now' % bb[0:len(bb)-3])
+
+        # thg duration
+        bb = self.vanguard.query('READ:THG:HOURs?')
+        self.thg_position_duration.setText('THG spot used for %s' % bb[0:len(bb) - 3])
         
         # PCT warmed up ? 
         bb = self.vanguard.query('READ:PCTWarmedup?')
@@ -475,55 +477,16 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vanguard_heatup_progressBar.setVisible(False)
 
         @pyqtSlot()
+        #
         def vg_autotune_meth(self):
 
-            if self.vg_autotune_chck.isChecked():  # expert mode
+            if self.vg_autotune_chck.isChecked():  # thg autotune mode
 
-                self.vanguard_diode1_LCD.setVisible(True)
-                self.vanguard_diode2_LCD.setVisible(True)
-                self.vg_amp1_lbl.setVisible(True)
-                self.vg_amp2_lbl.setVisible(True)
-                self.vg_amp3_lbl.setVisible(True)
-                self.vg_amp4_lbl.setVisible(True)
-                self.vg_amp5_lbl.setVisible(True)
-                self.vg_amp6_lbl.setVisible(True)
-                self.vg_amp7_lbl.setVisible(True)
-                self.vg_amp8_lbl.setVisible(True)
-                self.vg_temp1_lbl.setVisible(True)
-                self.vg_temp2_lbl.setVisible(True)
-                self.vg_temp3_lbl.setVisible(True)
-                self.vg_temp4_lbl.setVisible(True)
-                self.vg_temp5_lbl.setVisible(True)
-                self.vg_temp6_lbl.setVisible(True)
-                self.vanguard_diode1_temp_LCD.setVisible(True)
-                self.vanguard_diode2_temp_LCD.setVisible(True)
-                self.vanguard_HS1_LCD.setVisible(True)
-                self.vanguard_HS2_LCD.setVisible(True)
-                self.vg_pct_lbl.setVisible(True)
-                self.vanguard_heatup_progressBar.setVisible(True)
+                self.thg_dur_lbl.setVisible(True)
+                self.thg_position_duration.setVisible(True)
 
 
             else:  # no expert mode
 
-                self.vanguard_diode1_LCD.setVisible(False)
-                self.vanguard_diode2_LCD.setVisible(False)
-                self.vg_amp1_lbl.setVisible(False)
-                self.vg_amp2_lbl.setVisible(False)
-                self.vg_amp3_lbl.setVisible(False)
-                self.vg_amp4_lbl.setVisible(False)
-                self.vg_amp5_lbl.setVisible(False)
-                self.vg_amp6_lbl.setVisible(False)
-                self.vg_amp7_lbl.setVisible(False)
-                self.vg_amp8_lbl.setVisible(False)
-                self.vg_temp1_lbl.setVisible(False)
-                self.vg_temp2_lbl.setVisible(False)
-                self.vg_temp3_lbl.setVisible(False)
-                self.vg_temp4_lbl.setVisible(False)
-                self.vg_temp5_lbl.setVisible(False)
-                self.vg_temp6_lbl.setVisible(False)
-                self.vanguard_diode1_temp_LCD.setVisible(False)
-                self.vanguard_diode2_temp_LCD.setVisible(False)
-                self.vanguard_HS1_LCD.setVisible(False)
-                self.vanguard_HS2_LCD.setVisible(False)
-                self.vg_pct_lbl.setVisible(False)
-                self.vanguard_heatup_progressBar.setVisible(False)
+                self.thg_dur_lbl.setVisible(False)
+                self.thg_position_duration.setVisible(False)
