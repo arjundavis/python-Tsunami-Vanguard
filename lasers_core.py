@@ -45,46 +45,8 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         self._want_to_close = False
         
         self.wrn_msg_lbl.setVisible(False)
-        #
-        # self..clicked.connect(self.connect_millenia_meth)
-        # self.on_millenia_push.clicked.connect(self.turn_on_millenia_meth)
-        # self.off_millenia_push.clicked.connect(self.turn_off_millenia_meth)
-        # self.millenia_shuttemillenia_connect_pushr_open_radio.clicked.connect(self.shutter_millenia_meth)
-        # self.millenia_shutter_close_radio.clicked.connect(self.shutter_millenia_meth)
-        # self.close_gui_push.clicked.connect(self.quit_gui_lasers_meth)
-        # self.millenia_lst_pwr_cmd_query_push.clicked.connect(self.query_last_pwr_cmd_millenia_meth)
-        # self.millenia_set_pwr_push.clicked.connect(self.set_pwr_prof_millenia_meth)
-        # self.millenia_power_prof_combo.activated.connect(self.ctl_prof_combobx_meth)
-        #
-        # self.millenia_param_status_query_push.clicked.connect(self.get_param_status_millenia_meth)
-        # # self.millenia_get_diodes_temp_push.clicked.connect(self.get_diodes_temp_millenia_meth)
-        # self.millenia_curr_pwr_query_push.clicked.connect(self.get_pwr_laser_millenia_meth)
-        # self.millenia_duration_query_push.clicked.connect(self.get_duration_millenia_meth)
-        # self.millenia_ctl_warmup_push.clicked.connect(self.ctl_wrmup_millenia_meth)
-        
-        self.on_millenia_push.setEnabled(False)
-        self.off_millenia_push.setEnabled(False)
-        self.millenia_shutter_bx.setEnabled(False)
-        self.millenia_param_status_query_push.setEnabled(False)
-        self.millenia_ctl_warmup_push.setEnabled(False)
-        self.millenia_lst_pwr_cmd_query_push.setEnabled(False)
-        self.millenia_set_pwr_push.setEnabled(False)
-        
-        self.read_command_millenia_signal.connect(self.read_command_millenia_meth)
-        self.query_last_pwr_cmd_millenia_signal.connect(self.query_last_pwr_cmd_millenia_meth)
-        
-        self.millenia_get_param_status_signal.connect(self.get_param_status_millenia_meth)
-        # self.get_pwr_laser_millenia_signal.connect(self.get_pwr_laser_millenia_meth)
-        # self.millenia_get_diodes_signal.connect(self.get_diodes_millenia_push_meth)
-        # self.millenia_get_diodes_temp_signal.connect(self.get_diodes_temp_millenia_meth)
-        # self.millenia_duration_query_signal.connect(self.get_duration_millenia_meth)
-        # self.ctl_wrmup_millenia_signal.connect(self.ctl_wrmup_millenia_meth)
 
-        
-        self.pwr_millenia_low = 0.05 # W
-        self.pwr_millenia_high = 12.00 # W
-        
-        self.temp_diode_max = 30 # °C
+
         
         self.first_read = 1
         self.val_wrmup_current = 0 # init
@@ -95,6 +57,9 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         
         self.on_vanguard_push.clicked.connect(self.turn_on_vanguard_meth)
         self.off_vanguard_push.clicked.connect(self.turn_off_vanguard_meth)
+
+        self.autotune_start.clicked.connect(self.thg_autotune_start)
+        self.autotune_stop.clicked.connect(self.thg_autotune_stop)
         
         self.temp_diode_max_vg = 30 # °C
         
@@ -103,57 +68,17 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         
         self.vg_gb_shutter.setEnabled(False)
         self.on_vanguard_push.setEnabled(False)
+        self.autotune_start.setEnabled(False)
+        self.autotune_stop.setEnabled(False)
         self.off_vanguard_push.setEnabled(False)
         self.vanguard_param_status_query_push.setEnabled(False)
-        
-        # self.wrn_msg_lbl_vg.setVisible(False)
-        self.lktoclock_get_param_status_signal.connect(self.get_param_status_lktoclock_meth)
-        
-        self.lktoclock_param_status_query_push.clicked.connect(self.get_param_status_lktoclock_meth)
-    
-        self.lktoclock_delay_spnbx.valueChanged.connect(self.lktoclock_after_change_dly_spnbx_meth)
-        self.lktoclock_delay_spnbx.editingFinished.connect(self.lktoclock_query_delay_meth)
-        # editingFinished not responsive enough
-        # self.lktoclock_dial.sliderMoved.connect(self.lktoclock_after_change_dly_dial_meth)
-        self.lktoclock_dial.valueChanged.connect(self.lktoclock_after_change_dly_dial_meth)
-        self.lktoclock_dial.sliderReleased.connect(self.lktoclock_query_delay_meth)
-        # vqlueChqnged reacts also when another function change it, unless you block signals
-        # sliderMoved does not react to clicks
-        
-        self.lktoclock_connect_push.clicked.connect(self.connect_lktoclock_meth)
-        
-        self.lktoclock_lock_on_radio.setEnabled(False)
-        #self.lktoclock_delay_spnbx.setEnabled(False)
-        # self.lktoclock_dial.setEnabled(False)
-        self.lktoclock_param_status_query_push.setEnabled(False)
-        self.lktoclock_disconnect_push.setEnabled(False)
-        
-        self.lktoclock_lock_on_radio.clicked.connect(self.lktoclock_lock_meth)
-        self.lktoclock_lock_off_radio.clicked.connect(self.lktoclock_lock_meth)
-        
-        self.lktoclock_disconnect_push.clicked.connect(self.lktoclock_disconn_meth)
-        
-        self.lktoclock_delayposstep_push.clicked.connect(self.lktoclock_delayposstep_meth)
-        self.lktoclock_delaynegstep_push.clicked.connect(self.lktoclock_delaynegstep_meth)
-        
-        self.millenia_chck.stateChanged.connect(self.millenia_chck_meth)
-        self.millenia_expert_chck.stateChanged.connect(self.millenia_expert_chck_meth)
-        self.millenia_chck_meth() # hide the buttons
-        
-        self.lk2clk_chck.stateChanged.connect(self.lktoclock_chck_meth)
-        self.lktoclock_chck_meth() # hide the buttons
+
+
         
         self.vg_chck.stateChanged.connect(self.vg_chck_meth)
         self.vg_chck_meth() # hide the buttons
         
         self.vg_expert_chck.stateChanged.connect(self.vg_expert_meth)
-        
-        self.max_bit_lktoclck_delay = 4095
-        self.max_ns_lktoclck_delay = 2 # ns
-        self.lktoclock_pzt_dc_max = 1000
-        self.lktoclock_lmon_dc_max = 100
-        
-        # self.list_STB_lktoclock = ['ACQ 1 if the system is in acquisition mode'
         
     @pyqtSlot()    
     def quit_gui_lasers_meth(self):
@@ -162,28 +87,18 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
                             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                             QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
             print("User chose to close ...")
-            # QApplication.quit()
-            
-            # (x.close() for x in ['self.millenia', 'self.vanguard', 'self.lktoclock'] if x in locals())
-            if hasattr(self,'millenia'):
-                self.millenia.close()
+
                 
             if hasattr(self,'vanguard'):
                 self.vanguard.close()
-                
-            if hasattr(self,'lktoclock'):
-                self.lktoclock.close()
 
-            
             print('Terminating  ...')
-            
-            # time.sleep(2)
+
             sys.exit()
             self.close()
             print('terminated.')
         
     def closeEvent(self, event): # method to overwrite the close event, because otherwise the object is no longer available
-        # self.deleteLater()
         if self._want_to_close:
             
             super(Lasers_GUI, self).closeEvent(event)
@@ -315,7 +230,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.terminal_log_2_edt.setTextColor(QtGui.QColor('red'))
             self.terminal_log_2_edt.append('WARNING : temperature too high !')
      
-    # heatsinks
+        # heatsinks
     
         bb = self.vanguard.query('READ:DIODE1:HeatSINK?')
         hs_diode1 = float(bb[0:len(bb)-3]) # 
@@ -334,6 +249,21 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         # thg duration
         bb = self.vanguard.query('READ:THG:HOURs?')
         self.thg_position_duration.setText('THG spot used for %s' % bb[0:len(bb) - 3])
+
+        # thg spot position
+        bb = self.vanguard.query('READ:THG:SPOT?')
+        spot = float(bb[0:len(bb)-3]) #
+        self.vanguard_thg_spot_position.display(spot)
+
+        # thg x position
+        bb = self.vanguard.query('READ:THG:XPOS?')
+        xpos = float(bb[0:len(bb) - 3])  #
+        self.vanguard_thg_x_position.display(xpos)
+
+        # thg y position
+        bb = self.vanguard.query('READ:THG:YPOS?')
+        ypos = float(bb[0:len(bb) - 3])  #
+        self.vanguard_thg_y_position.display(ypos)
         
         # PCT warmed up ? 
         bb = self.vanguard.query('READ:PCTWarmedup?')
@@ -367,20 +297,41 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.shutter_vanguard_meth()
 
     @pyqtSlot()
-    def thg_autotune(self):
+    def thg_autotune_start(self):
 
         if QtWidgets.QMessageBox.question(None, '', "Are you sure you want to autotune the THG?",
                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                           QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-            self.shutter_open_vg_radio.setChecked(False)  # shutter open is checked
+            if QtWidgets.QMessageBox.question(None, '', "Has the laser been operating for 5 mins?",
+                                              QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                              QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+                # self.shutter_open_vg_radio.setChecked(False)  # shutter open is checked
+                if self.shutter_open_vg_radio.isChecked():
+                    self.vanguard.write('CONT:THG:AUTO 1')  # start autotune process
 
-            self.vanguard.write('CONT:THG:AUTO1')  # turn off the vanguard
-            upd = self.vanguard.query('CONT:THG:AUTO?')
+                    self.vanguard_status_edt.setText('Vanguard autotune in progress\n')
+                else:
+                    self.terminal_log_2_edt.setText('ERR: Vanguard shutter is closed.\n')
+                upd = self.vanguard.query('CONT:THG:AUTO?')
+
+                print(f'vanguard autotune query {upd}')
+
+    @pyqtSlot()
+    def thg_autotune_stop(self):
+
+        if QtWidgets.QMessageBox.question(None, '', "STOP autotune?",
+                                          QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                          QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+
+        self.vanguard.write('CONT:THG:AUTO 0')  # end autotune process
+
+        self.vanguard_status_edt.setText('Vanguard autotune terminated...\n')
+        upd = self.vanguard.query('CONT:THG:AUTO?')
+
+        print(f'vanguard autotune ? query returns : {upd}')
 
 
-            self.vanguard_status_edt.setText('Vanguard autotune in progress')
 
-            self.shutter_vanguard_meth()
     
     @pyqtSlot()
     def shutter_vanguard_meth(self):
