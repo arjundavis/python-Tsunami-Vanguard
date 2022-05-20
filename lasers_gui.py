@@ -7,8 +7,8 @@ Created on Mon July 24 16:35:13 2017
 """
 import os, sys
 # os.chdir('C:/Users/admin/Documents/Python/python-Tsunami-Vanguard')
-# os.chdir('/Drivers/Raman/python-Tsunami-Vanguard')
-os.chdir('/home/qcl/universal_experiment_control/blade_trap/vanguard_control/python-Tsunami-Vanguard')
+os.chdir('/Users/arjundavidrao/Documents/Aus/PhD/Coding/phd-main/Drivers/Raman/python-Tsunami-Vanguard')
+# os.chdir('/home/qcl/universal_experiment_control/blade_trap/vanguard_control/python-Tsunami-Vanguard')
 
 from PyQt5 import QtWidgets
 

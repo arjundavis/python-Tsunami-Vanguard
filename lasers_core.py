@@ -59,6 +59,9 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         self.shutter_open_vg_radio.clicked.connect(self.shutter_vanguard_meth)
         self.shutter_close_vg_radio.clicked.connect(self.shutter_vanguard_meth)
 
+        self.THG_change_position.clicked.connect(self.thg_change)
+        self.SESAM_change_position.clicked.connect(self.SESAM_change)
+
         self.vg_gb_shutter.setEnabled(False)
         self.on_vanguard_push.setEnabled(False)
         self.autotune_start.setEnabled(False)
@@ -81,15 +84,10 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             print("User chose to close ...")
             # QApplication.quit()
 
-            # (x.close() for x in ['self.millenia', 'self.vanguard', 'self.lktoclock'] if x in locals())
-            if hasattr(self, 'millenia'):
-                self.millenia.close()
-
             if hasattr(self, 'vanguard'):
                 self.vanguard.close()
 
-            if hasattr(self, 'lktoclock'):
-                self.lktoclock.close()
+
 
             print('Terminating  ...')
 
@@ -166,7 +164,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.on_vanguard_push.setEnabled(True)
             self.off_vanguard_push.setEnabled(True)
             self.vanguard_param_status_query_push.setEnabled(True)
-
+            # self.thg_autotune_start.setEnab
             self.vanguard_get_param_status_signal.emit()
 
         else:
@@ -264,17 +262,17 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         ypos = float(bb[0:len(bb) - 3])  #
         self.vanguard_thg_y_position.display(ypos)
 
-        # shg position
-        bb = self.vanguard.query('READ:SHG:SPOT?')
+        # sesam position
+        bb = self.vanguard.query('READ:QW:XPOS?')
         sesam = float(bb[0:len(bb) - 3])  #
         self.sesam_position.display(sesam)
 
-        # shg duration
-        bb = self.vanguard.query('READ:SHG:HOURs?')
-        self.thg_position_duration.setText('SHG spot used for %s' % bb[0:len(bb) - 3])
+        # sesam duration
+        bb = self.vanguard.query('READ:QW:HOUR?')
+        self.thg_position_duration.setText('SESAM spot used for %s' % bb[0:len(bb) - 3])
 
         # PCT warmed up ? 
-        bb = self.vanguard.query('READ:PCTWarmedup?')
+        bb = self.vanguard.query('READ:PCTW?')
         val_wrmup = round(float(bb[0:len(bb) - 2]))
         self.vanguard_heatup_progressBar.setValue(val_wrmup)
 
@@ -313,7 +311,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
                                               QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
                 # self.shutter_open_vg_radio.setChecked(False)  # shutter open is checked
                 if self.shutter_open_vg_radio.isChecked():
-                    self.vanguard.write('CONT:THG:AUTO 1')  # start autotune process
+                    # self.vanguard.write('CONT:THG:AUTO 1')  # start autotune process # TODO test without sending query..
 
                     self.vanguard_status_edt.setText('Vanguard autotune in progress\n')
                 else:
@@ -328,7 +326,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         if QtWidgets.QMessageBox.question(None, '', "STOP autotune?",
                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                           QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-            self.vanguard.write('CONT:THG:AUTO 0')  # end autotune process
+            # self.vanguard.write('CONT:THG:AUTO 0')  # end autotune process # TODO test without running to check scripting works then uncomment
 
             self.vanguard_status_edt.setText('Vanguard autotune terminated...\n')
         upd = self.vanguard.query('CONT:THG:AUTO?')
@@ -346,6 +344,42 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
 
             self.vanguard.write('SHUTter:0')  # close the shutter
             print('shutter closed')
+
+    @pyqtSlot()
+    def thg_change(self):
+        if QtWidgets.QMessageBox.question(None, '', "Change THG crystal position?",
+                                          QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                          QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+            new_x_pos = str(self.vanguard_change_THG_1.currentText())
+            new_y_pos = str(self.vanguard_change_THG_2.currentText())
+            old_x_pos = self.vanguard_thg_x_position.value()
+            old_y_pos = self.vanguard_thg_y_position.value()
+
+            if not new_x_pos == old_x_pos:
+                # self.vanguard.query(f'CONT:THG:xPOS {int(new_x_pos)}') # TODO insert query code for changing crystal
+                print(f'THG crystal changed to X={new_X_pos}')
+            if not new_y_pos == old_y_pos:
+                # self.vanguard.query(f'CONT:THG:YPOS {int(new_y_pos)}') # TODO uncheck query code for changing crystal
+                print(f'THG crystal changed to Y={new_Y_pos}')
+
+            else:
+                print(
+                    f'new x pos = {new_x_pos} and old x pos = {old_x_pos}\n new y pos = {new_y_pos} and old y pos = {old_y_pos}')
+                pass
+
+    @pyqtSlot()
+    def SESAM_change(self):
+        if QtWidgets.QMessageBox.question(None, '', "Change SESAM position?",
+                                          QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                          QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+            new_SESAM_pos = str(self.vanguard_change_SESAM.currentText())
+            bb = self.vanguard.query('READ:QW:XPOS?')
+            old_SESAM_pos = str(bb[0:len(bb) - 3])
+            print(f'new_SESAM_pos = {new_SESAM_pos}, old_SESAM_pos = {old_SESAM_pos}')
+
+            if not old_SESAM_pos == new_SESAM_pos:
+                # self.vanguard.query(f'CONT:QW:XPOS {int(new_SESAM_pos)}')
+                print(f'SESAM crystal changed to Y={new_SESAM_pos}')
 
     @pyqtSlot()
     def vg_chck_meth(self):
@@ -451,17 +485,20 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vg_thg_lbl_4.setVisible(True)
             self.vg_thg_lbl_2.setVisible(True)
             self.sesam_position.setVisible(True)
-            self.shg_position_duration.setVisible(True)
+            self.sesam_position_duration.setVisible(True)
             self.thg_dur_lbl.setVisible(True)
             self.thg_position_duration.setVisible(True)
             self.thg_dur_lbl_2.setVisible(True)
             self.vanguard_change_THG_1.setVisible(True)
             self.vanguard_change_THG_2.setVisible(True)
-            self.THG_change_position.setVisible(True)
+            self.SESAM_change_position.setVisible(True)
             self.vg_thg_lbl_7.setVisible(True)
             self.vg_thg_lbl_8.setVisible(True)
             self.autotune_start.setVisible(True)
             self.autotune_stop.setVisible(True)
+            self.vanguard_change_SESAM.setVisible(True)
+            self.vg_sesam_lbl_3.setVisible(True)
+
 
 
         else:  # no autotune mode
@@ -478,14 +515,16 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vg_thg_lbl_4.setVisible(False)
             self.vg_thg_lbl_2.setVisible(False)
             self.sesam_position.setVisible(False)
-            self.shg_position_duration.setVisible(False)
+            self.sesam_position_duration.setVisible(False)
             self.thg_dur_lbl.setVisible(False)
             self.thg_position_duration.setVisible(False)
             self.thg_dur_lbl_2.setVisible(False)
             self.vanguard_change_THG_1.setVisible(False)
             self.vanguard_change_THG_2.setVisible(False)
-            self.THG_change_position.setVisible(False)
+            self.SESAM_change_position.setVisible(False)
             self.vg_thg_lbl_7.setVisible(False)
             self.vg_thg_lbl_8.setVisible(False)
             self.autotune_start.setVisible(False)
             self.autotune_stop.setVisible(False)
+            self.vanguard_change_SESAM.setVisible(False)
+            self.vg_sesam_lbl_3.setVisible(False)
