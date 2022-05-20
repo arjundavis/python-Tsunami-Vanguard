@@ -6,8 +6,9 @@ Created on Mon July 24 16:35:13 2017
 @edits for Vanguard full control : Arjun David RAO
 """
 import os, sys
-os.chdir('C:/Users/admin/Documents/Python/python-Tsunami-Vanguard')
-os.chdir('/Drivers/Raman/python-Tsunami-Vanguard')
+# os.chdir('C:/Users/admin/Documents/Python/python-Tsunami-Vanguard')
+# os.chdir('/Drivers/Raman/python-Tsunami-Vanguard')
+os.chdir('/home/qcl/universal_experiment_control/blade_trap/vanguard_control/unstable/python-Tsunami-Vanguard')
 
 from PyQt5 import QtWidgets
 
