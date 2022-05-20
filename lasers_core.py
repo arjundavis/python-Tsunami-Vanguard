@@ -13,7 +13,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 print('Importing VISA ...')
 
-import visa
+import pyvisa as visa
 
 print('VISA ok ok.')
 
