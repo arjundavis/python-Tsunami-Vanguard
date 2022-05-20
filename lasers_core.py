@@ -17,55 +17,48 @@ import pyvisa as visa
 
 print('VISA ok ok.')
 
+Ui_lasersWindow, QlasersWindow = loadUiType('lasers_gui.ui')  # loading the dialog box for jobs
 
-Ui_lasersWindow, QlasersWindow = loadUiType('lasers_gui.ui') # loading the dialog box for jobs 
 
 class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
     """
     pyqtsginals go here 
     """
 
-
-
-
     vanguard_get_param_status_signal = pyqtSignal()
 
-
-    
     def __init__(self, parent=None):
         """
         var init go here 
         """
-        
+
         super(Lasers_GUI, self).__init__(parent)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.setupUi(self)
-        
+
         # when you want to destroy the dialog set this to True
         self._want_to_close = False
-        
+
         self.wrn_msg_lbl.setVisible(False)
 
-
-        
         self.first_read = 1
-        self.val_wrmup_current = 0 # init
-        
+        self.val_wrmup_current = 0  # init
+
         self.vanguard_connect_button.clicked.connect(self.connect_vanguard_meth)
         self.vanguard_param_status_query_push.clicked.connect(self.get_param_status_vanguard_meth)
         self.vanguard_get_param_status_signal.connect(self.get_param_status_vanguard_meth)
-        
+
         self.on_vanguard_push.clicked.connect(self.turn_on_vanguard_meth)
         self.off_vanguard_push.clicked.connect(self.turn_off_vanguard_meth)
 
         self.autotune_start.clicked.connect(self.thg_autotune_start)
         self.autotune_stop.clicked.connect(self.thg_autotune_stop)
-        
-        self.temp_diode_max_vg = 30 # °C
-        
+
+        self.temp_diode_max_vg = 30  # °C
+
         self.shutter_open_vg_radio.clicked.connect(self.shutter_vanguard_meth)
         self.shutter_close_vg_radio.clicked.connect(self.shutter_vanguard_meth)
-        
+
         self.vg_gb_shutter.setEnabled(False)
         self.on_vanguard_push.setEnabled(False)
         self.autotune_start.setEnabled(False)
@@ -73,23 +66,20 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         self.off_vanguard_push.setEnabled(False)
         self.vanguard_param_status_query_push.setEnabled(False)
 
-
-        
         self.vg_chck.stateChanged.connect(self.vg_chck_meth)
-        self.vg_chck_meth() # hide the buttons
-        
+        self.vg_chck_meth()  # hide the buttons
+
         self.vg_expert_chck.stateChanged.connect(self.vg_expert_meth)
-        
-    @pyqtSlot()    
+
+    @pyqtSlot()
     def quit_gui_lasers_meth(self):
-        
+
         if QtWidgets.QMessageBox.question(None, '', "Are you sure you want to quit?",
-                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                            QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+                                          QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                          QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
             print("User chose to close ...")
 
-                
-            if hasattr(self,'vanguard'):
+            if hasattr(self, 'vanguard'):
                 self.vanguard.close()
 
             print('Terminating  ...')
@@ -97,49 +87,49 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             sys.exit()
             self.close()
             print('terminated.')
-        
-    def closeEvent(self, event): # method to overwrite the close event, because otherwise the object is no longer available
+
+    def closeEvent(self,
+                   event):  # method to overwrite the close event, because otherwise the object is no longer available
         if self._want_to_close:
-            
+
             super(Lasers_GUI, self).closeEvent(event)
         else:
             event.ignore()
             self.setWindowState(QtCore.Qt.WindowMinimized)
 
-        
     ## Vanguard
-        
-    @pyqtSlot()        
+
+    @pyqtSlot()
     def connect_vanguard_meth(self):
-        
-        baud_rate_vanguard= 9600
+
+        baud_rate_vanguard = 9600
         bits_vanguard = 8
         parity_vanguard = visa.constants.Parity.none
         stop_bit_vanguard = visa.constants.StopBits.one
-        flow_control_vanguard= 0 # hardware control ?
-        timeout_vanguard = 2000 # ms
+        flow_control_vanguard = 0  # hardware control ?
+        timeout_vanguard = 2000  # ms
         # read_termination_vanguard  = '\n'
         # write_termination_vanguard = read_termination_vanguard
-        
+
         current_txt = self.vanguard_com_combo.currentText()
         # for pyvisa and not pyvisa-py
         # if current_txt[6] == '(':
         #     current_txt = current_txt[0:6]
         # else:
         #     current_txt = current_txt[0:7]
-        
+
         ressource_vanguard = '%s' % current_txt
         print('ressource_vanguard =', ressource_vanguard)
-        
+
         rm = visa.ResourceManager('@py')
         self.vanguard = rm.open_resource(ressource_vanguard)
-        
-        self.vanguard.baud_rate = baud_rate_vanguard 
-        self.vanguard.data_bits = bits_vanguard 
-        self.vanguard.parity = parity_vanguard 
-        self.vanguard.stop_bits = stop_bit_vanguard 
-        self.vanguard.flow_control = flow_control_vanguard 
-        self.vanguard.timeout = timeout_vanguard 
+
+        self.vanguard.baud_rate = baud_rate_vanguard
+        self.vanguard.data_bits = bits_vanguard
+        self.vanguard.parity = parity_vanguard
+        self.vanguard.stop_bits = stop_bit_vanguard
+        self.vanguard.flow_control = flow_control_vanguard
+        self.vanguard.timeout = timeout_vanguard
         # self.vanguard.read_termination  = read_termination_vanguard 
         # self.vanguard.write_termination = write_termination_vanguard
         # 
@@ -147,66 +137,66 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         # 
         # self.query_last_pwr_cmd_vanguard_signal.emit()
         # self.vanguard_get_param_status_signal.emit()
-        
+
         self.vanguard_heatup_progressBar.setValue(0)
-        
+
         self.query_ID_vanguard_meth()
-              
+
     def query_ID_vanguard_meth(self):
-        
+
         bb = self.vanguard.query('*IDN?')
 
-        if bool(bb): # True if is detected
-        
+        if bool(bb):  # True if is detected
+
             self.terminal_log_2_edt.append(bb)
-            
+
             # activate buttons
             self.vg_gb_shutter.setEnabled(True)
             self.on_vanguard_push.setEnabled(True)
             self.off_vanguard_push.setEnabled(True)
             self.vanguard_param_status_query_push.setEnabled(True)
-            
+
             self.vanguard_get_param_status_signal.emit()
-        
+
         else:
-            
+
             print('Vanguard not detected')
-        
-    @pyqtSlot()        
-    def get_param_status_vanguard_meth(self):  
-    
+
+    @pyqtSlot()
+    def get_param_status_vanguard_meth(self):
+
         # shutter
-        
+
         stat_shutter = self.vanguard.query('SHUTter?')
-        
+
         # print('stat_shutter = ', stat_shutter)
-        
-        if int(stat_shutter): 
-            self.shutter_open_vg_radio.setChecked(True) # shutter open)
+
+        if int(stat_shutter):
+            self.shutter_open_vg_radio.setChecked(True)  # shutter open)
             print('shutter is open')
         else:
-            self.shutter_open_vg_radio.setChecked(False) # shutter closed)
+            self.shutter_open_vg_radio.setChecked(False)  # shutter closed)
             print('shutter is closed')
-        
+
         # diode 0 does not work
 
         # diode 1
         bb = self.vanguard.query('READ:DIODE1:CURRent?')
-        
-        stat_diode1 = float(bb[0:len(bb)-3]) # ex is '0.12A1\n' for 1 if OFF
-        
+
+        stat_diode1 = float(bb[0:len(bb) - 3])  # ex is '0.12A1\n' for 1 if OFF
+
         self.vanguard_diode1_LCD.display(stat_diode1)
-        
+
         # diode 2
         bb = self.vanguard.query('READ:DIODE2:CURRent?')
-        
-        stat_diode2 = float(bb[0:len(bb)-3]) # ex is  for 0
-        
+
+        stat_diode2 = float(bb[0:len(bb) - 3])  # ex is  for 0
+
         self.vanguard_diode2_LCD.display(stat_diode2)
-        
-        current_min = 0.15 # A
-        current_threshold = 13 #A
-        
+
+        current_min = 0.15  # A
+        current_threshold = 13  # A
+
         if (stat_diode1 < current_min and stat_diode2 < current_min):
             self.vanguard_status_edt.setText('Laser is OFF')
         elif stat_diode1 > current_threshold:
@@ -214,37 +204,35 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         else:
             self.vanguard_status_edt.setText('Laser is turning on ...')
 
-        
         bb = self.vanguard.query('READ:DIODE1:TEMPerature?')
-        temp_diode1 = float(bb[0:len(bb)-3]) # 
-        
+        temp_diode1 = float(bb[0:len(bb) - 3])  #
+
         self.vanguard_diode1_temp_LCD.display(temp_diode1)
-        
+
         bb = self.vanguard.query('READ:DIODE2:TEMPerature?')
-        temp_diode2 = float(bb[0:len(bb)-3]) # 
-        
+        temp_diode2 = float(bb[0:len(bb) - 3])  #
+
         self.vanguard_diode2_temp_LCD.display(temp_diode2)
-        
-        
+
         if (temp_diode1 > self.temp_diode_max_vg or temp_diode2 > self.temp_diode_max_vg):
             self.terminal_log_2_edt.setTextColor(QtGui.QColor('red'))
             self.terminal_log_2_edt.append('WARNING : temperature too high !')
-     
+
         # heatsinks
-    
+
         bb = self.vanguard.query('READ:DIODE1:HeatSINK?')
-        hs_diode1 = float(bb[0:len(bb)-3]) # 
-        
+        hs_diode1 = float(bb[0:len(bb) - 3])  #
+
         self.vanguard_HS1_LCD.display(hs_diode1)
-        
+
         bb = self.vanguard.query('READ:DIODE2:HeatSINK?')
-        hs_diode2 = float(bb[0:len(bb)-3]) # 
-        
+        hs_diode2 = float(bb[0:len(bb) - 3])  #
+
         self.vanguard_HS2_LCD.display(hs_diode2)
-        
+
         # duration 
         bb = self.vanguard.query('READ:DIODE1:HOURs?')
-        self.vanguard_duration_edt.setText('Control unit ON for %s now' % bb[0:len(bb)-3])
+        self.vanguard_duration_edt.setText('Control unit ON for %s now' % bb[0:len(bb) - 3])
 
         # thg duration
         bb = self.vanguard.query('READ:THG:HOURs?')
@@ -252,7 +240,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
 
         # thg spot position
         bb = self.vanguard.query('READ:THG:SPOT?')
-        spot = float(bb[0:len(bb)-3]) #
+        spot = float(bb[0:len(bb) - 3])  #
         self.vanguard_thg_spot_position.display(spot)
 
         # thg x position
@@ -273,36 +261,34 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         # shg duration
         bb = self.vanguard.query('READ:SHG:HOURs?')
         self.thg_position_duration.setText('SHG spot used for %s' % bb[0:len(bb) - 3])
-        
+
         # PCT warmed up ? 
         bb = self.vanguard.query('READ:PCTWarmedup?')
-        val_wrmup = round(float(bb[0:len(bb)-2]))
+        val_wrmup = round(float(bb[0:len(bb) - 2]))
         self.vanguard_heatup_progressBar.setValue(val_wrmup)
-    
-        
-    @pyqtSlot()        
+
+    @pyqtSlot()
     def turn_on_vanguard_meth(self):
-        
+
         if QtWidgets.QMessageBox.question(None, '', "Are you sure you want to turn Vanguard ON?",
-                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                            QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-            self.vanguard.write('ON') # turn on the vanguard
-            
+                                          QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                          QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+            self.vanguard.write('ON')  # turn on the vanguard
+
             self.vanguard_status_edt.setText('Laser turned on : query the actual current...')
-        
-    @pyqtSlot()        
+
+    @pyqtSlot()
     def turn_off_vanguard_meth(self):
-        
+
         if QtWidgets.QMessageBox.question(None, '', "Are you sure you want to turn Vanguard OFF?",
-                            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                            QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-            
-            self.shutter_open_vg_radio.setChecked(False) # shutter open is checked
-            
-            self.vanguard.write('OFF') # turn off the vanguard
-            
+                                          QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                          QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
+            self.shutter_open_vg_radio.setChecked(False)  # shutter open is checked
+
+            self.vanguard.write('OFF')  # turn off the vanguard
+
             self.vanguard_status_edt.setText('Laser turned OFF')
-            
+
             self.shutter_vanguard_meth()
 
     @pyqtSlot()
@@ -331,7 +317,6 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         if QtWidgets.QMessageBox.question(None, '', "STOP autotune?",
                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                           QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-
             self.vanguard.write('CONT:THG:AUTO 0')  # end autotune process
 
             self.vanguard_status_edt.setText('Vanguard autotune terminated...\n')
@@ -339,26 +324,23 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
 
         print(f'vanguard autotune ? query returns : {upd}')
 
-
-
-    
     @pyqtSlot()
     def shutter_vanguard_meth(self):
-        
-        if self.shutter_open_vg_radio.isChecked(): # shutter open is checked
-        
-            self.vanguard.write('SHUTter:1') # open shutter
+
+        if self.shutter_open_vg_radio.isChecked():  # shutter open is checked
+
+            self.vanguard.write('SHUTter:1')  # open shutter
             print('shutter open')
-        else: # shutter closed is checked
-            
-            self.vanguard.write('SHUTter:0') # close the shutter
+        else:  # shutter closed is checked
+
+            self.vanguard.write('SHUTter:0')  # close the shutter
             print('shutter closed')
-            
-    @pyqtSlot()        
+
+    @pyqtSlot()
     def vg_chck_meth(self):
-               
-        if self.vg_chck.isChecked(): # Vanguard menus
-            
+
+        if self.vg_chck.isChecked():  # Vanguard menus
+
             self.on_vanguard_push.setVisible(True)
             self.off_vanguard_push.setVisible(True)
             self.vg_gb_shutter.setVisible(True)
@@ -368,9 +350,9 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vanguard_connect_button.setVisible(True)
             self.vg_stat_lbl.setVisible(True)
             self.vanguard_com_combo.setVisible(True)
-    
-        else: # no Vanguard menus
-        
+
+        else:  # no Vanguard menus
+
             self.on_vanguard_push.setVisible(False)
             self.off_vanguard_push.setVisible(False)
             self.vg_gb_shutter.setVisible(False)
@@ -382,15 +364,15 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vanguard_com_combo.setVisible(False)
             self.vg_expert_chck.setChecked(False)
             self.vg_autotune_chck.setChecked(False)
-            
-        self.vg_expert_meth() # hide some buttons
+
+        self.vg_expert_meth()  # hide some buttons
         self.vg_autotune_meth()
-     
-    @pyqtSlot()        
-    def vg_expert_meth(self):  
-         
-        if self.vg_expert_chck.isChecked(): # expert mode
-            
+
+    @pyqtSlot()
+    def vg_expert_meth(self):
+
+        if self.vg_expert_chck.isChecked():  # expert mode
+
             self.vanguard_diode1_LCD.setVisible(True)
             self.vanguard_diode2_LCD.setVisible(True)
             self.vg_amp1_lbl.setVisible(True)
@@ -413,10 +395,10 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vanguard_HS2_LCD.setVisible(True)
             self.vg_pct_lbl.setVisible(True)
             self.vanguard_heatup_progressBar.setVisible(True)
- 
-            
-        else: # no expert mode
-        
+
+
+        else:  # no expert mode
+
             self.vanguard_diode1_LCD.setVisible(False)
             self.vanguard_diode2_LCD.setVisible(False)
             self.vg_amp1_lbl.setVisible(False)
@@ -444,13 +426,55 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
     # thg autotune part of vanguard window
     def vg_autotune_meth(self):
 
-            if self.vg_autotune_chck.isChecked():  # thg autotune mode
+        if self.vg_autotune_chck.isChecked():  # thg autotune mode
 
-                self.thg_dur_lbl.setVisible(True)
-                self.thg_position_duration.setVisible(True)
+            self.thg_dur_lbl.setVisible(True)
+            self.thg_position_duration.setVisible(True)
+            self.vanguard_thg_spot_position.setVisible(True)
+            self.vanguard_thg_x_position.setVisible(True)
+            self.vanguard_thg_y_position.setVisible(True)
+            self.vg_thg_lbl_9.setVisible(True)
+            self.vg_thg_lbl_5.setVisible(True)
+            self.vg_thg_lbl_6.setVisible(True)
+            self.vg_thg_lbl_3.setVisible(True)
+            self.vg_thg_lbl_4.setVisible(True)
+            self.vg_thg_lbl_2.setVisible(True)
+            self.sesam_position.setVisible(True)
+            self.shg_position_duration.setVisible(True)
+            self.thg_dur_lbl.setVisible(True)
+            self.thg_position_duration.setVisible(True)
+            self.thg_dur_lbl_2.setVisible(True)
+            self.vanguard_change_THG_1.setVisible(True)
+            self.vanguard_change_THG_2.setVisible(True)
+            self.THG_change_position.setVisible(True)
+            self.vg_thg_lbl_7.setVisible(True)
+            self.vg_thg_lbl_8.setVisible(True)
+            self.autotune_start.setVisible(True)
+            self.autotune_stop.setVisible(True)
 
 
-            else:  # no autotune mode
+        else:  # no autotune mode
 
-                self.thg_dur_lbl.setVisible(False)
-                self.thg_position_duration.setVisible(False)
+            self.thg_dur_lbl.setVisible(False)
+            self.thg_position_duration.setVisible(False)
+            self.vanguard_thg_spot_position.setVisible(False)
+            self.vanguard_thg_x_position.setVisible(False)
+            self.vanguard_thg_y_position.setVisible(False)
+            self.vg_thg_lbl_9.setVisible(False)
+            self.vg_thg_lbl_5.setVisible(False)
+            self.vg_thg_lbl_6.setVisible(False)
+            self.vg_thg_lbl_3.setVisible(False)
+            self.vg_thg_lbl_4.setVisible(False)
+            self.vg_thg_lbl_2.setVisible(False)
+            self.sesam_position.setVisible(False)
+            self.shg_position_duration.setVisible(False)
+            self.thg_dur_lbl.setVisible(False)
+            self.thg_position_duration.setVisible(False)
+            self.thg_dur_lbl_2.setVisible(False)
+            self.vanguard_change_THG_1.setVisible(False)
+            self.vanguard_change_THG_2.setVisible(False)
+            self.THG_change_position.setVisible(False)
+            self.vg_thg_lbl_7.setVisible(False)
+            self.vg_thg_lbl_8.setVisible(False)
+            self.autotune_start.setVisible(False)
+            self.autotune_stop.setVisible(False)
