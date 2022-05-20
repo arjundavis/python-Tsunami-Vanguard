@@ -78,18 +78,28 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                           QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
             print("User chose to close ...")
+            # QApplication.quit()
+
+            # (x.close() for x in ['self.millenia', 'self.vanguard', 'self.lktoclock'] if x in locals())
+            if hasattr(self, 'millenia'):
+                self.millenia.close()
 
             if hasattr(self, 'vanguard'):
                 self.vanguard.close()
 
+            if hasattr(self, 'lktoclock'):
+                self.lktoclock.close()
+
             print('Terminating  ...')
 
+            # time.sleep(2)
             sys.exit()
             self.close()
             print('terminated.')
 
     def closeEvent(self,
                    event):  # method to overwrite the close event, because otherwise the object is no longer available
+        # self.deleteLater()
         if self._want_to_close:
 
             super(Lasers_GUI, self).closeEvent(event)
