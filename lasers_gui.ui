@@ -628,7 +628,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QPushButton" name="connect_vanguard_meth">
+   <widget class="QPushButton" name="vanguard_connect_button">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -2077,7 +2077,7 @@ p, li { white-space: pre-wrap; }
      <enum>QLCDNumber::Flat</enum>
     </property>
    </widget>
-   <widget class="QComboBox" name="vanguard_com_combo_2">
+   <widget class="QComboBox" name="vanguard_change_THG_1">
     <property name="geometry">
      <rect>
       <x>330</x>
@@ -2140,7 +2140,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </item>
    </widget>
-   <widget class="QComboBox" name="vanguard_com_combo_3">
+   <widget class="QComboBox" name="vanguard_change_THG_2">
     <property name="geometry">
      <rect>
       <x>390</x>
@@ -2200,7 +2200,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>550</y>
+      <y>560</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -2213,7 +2213,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>550</y>
+      <y>560</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -2279,7 +2279,7 @@ p, li { white-space: pre-wrap; }
      <string>(6 max)</string>
     </property>
    </widget>
-   <widget class="QLCDNumber" name="lcdNumber">
+   <widget class="QLCDNumber" name="sesam_position">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -2289,7 +2289,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="thg_position_duration_2">
+   <widget class="QLineEdit" name="shg_position_duration">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -2410,6 +2410,19 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="text">
      <string>SESAM position duration</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>500</y>
+      <width>81</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change Pos</string>
     </property>
    </widget>
   </widget>
