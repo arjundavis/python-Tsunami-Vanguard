@@ -264,6 +264,15 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         bb = self.vanguard.query('READ:THG:YPOS?')
         ypos = float(bb[0:len(bb) - 3])  #
         self.vanguard_thg_y_position.display(ypos)
+
+        # shg position
+        bb = self.vanguard.query('READ:SHG:SPOT?')
+        sesam = float(bb[0:len(bb) - 3])  #
+        self.sesam_position.display(sesam)
+
+        # shg duration
+        bb = self.vanguard.query('READ:SHG:HOURs?')
+        self.thg_position_duration.setText('SHG spot used for %s' % bb[0:len(bb) - 3])
         
         # PCT warmed up ? 
         bb = self.vanguard.query('READ:PCTWarmedup?')
