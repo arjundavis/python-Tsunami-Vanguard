@@ -332,9 +332,9 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                                           QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
 
-        self.vanguard.write('CONT:THG:AUTO 0')  # end autotune process
+            self.vanguard.write('CONT:THG:AUTO 0')  # end autotune process
 
-        self.vanguard_status_edt.setText('Vanguard autotune terminated...\n')
+            self.vanguard_status_edt.setText('Vanguard autotune terminated...\n')
         upd = self.vanguard.query('CONT:THG:AUTO?')
 
         print(f'vanguard autotune ? query returns : {upd}')
