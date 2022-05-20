@@ -440,9 +440,9 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vg_pct_lbl.setVisible(False)
             self.vanguard_heatup_progressBar.setVisible(False)
 
-        @pyqtSlot()
-        # thg autotune part of vanguard window
-        def vg_autotune_meth(self):
+    @pyqtSlot()
+    # thg autotune part of vanguard window
+    def vg_autotune_meth(self):
 
             if self.vg_autotune_chck.isChecked():  # thg autotune mode
 
