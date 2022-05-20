@@ -38,7 +38,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
 
         # when you want to destroy the dialog set this to True
         self._want_to_close = False
-
+        self.close_gui_push.clicked.connect(self.quit_gui_lasers_meth)
         self.wrn_msg_lbl.setVisible(False)
 
         self.first_read = 1
@@ -70,6 +70,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         self.vg_chck_meth()  # hide the buttons
 
         self.vg_expert_chck.stateChanged.connect(self.vg_expert_meth)
+        self.vg_autotune_chck.stateChanged.connect(self.vg_autotune_meth)
 
     @pyqtSlot()
     def quit_gui_lasers_meth(self):
