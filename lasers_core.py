@@ -168,7 +168,15 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.vanguard_get_param_status_signal.emit()
 
         else:
+            self.terminal_log_2_edt.append(bb)
 
+            # activate buttons
+            self.vg_gb_shutter.setEnabled(True)
+            self.on_vanguard_push.setEnabled(True)
+            self.off_vanguard_push.setEnabled(True)
+            self.vanguard_param_status_query_push.setEnabled(True)
+            # self.thg_autotune_start.setEnab
+            self.vanguard_get_param_status_signal.emit()
             print('Vanguard not detected')
 
     @pyqtSlot()
