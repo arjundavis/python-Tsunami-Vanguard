@@ -259,22 +259,22 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
 
         # thg spot position
         bb = self.vanguard.query('READ:THG:SPOT?')
-        spot = float(bb[0:len(bb) - 3])  #
+        spot = float(bb[:-1])  #
         self.vanguard_thg_spot_position.display(spot)
 
         # thg x position
         bb = self.vanguard.query('READ:THG:XPOS?')
-        xpos = float(bb[0:len(bb) - 3])  #
+        xpos = int(bb[:-1])  #
         self.vanguard_thg_x_position.display(xpos)
 
         # thg y position
         bb = self.vanguard.query('READ:THG:YPOS?')
-        ypos = float(bb[0:len(bb) - 3])  #
+        ypos = int(bb[:-1]) #
         self.vanguard_thg_y_position.display(ypos)
 
         # sesam position
         bb = self.vanguard.query('READ:QW:XPOS?')
-        sesam = float(bb[0:len(bb) - 3])  #
+        sesam = int(bb[:-1])  #
         self.sesam_position.display(sesam)
 
         # sesam duration
