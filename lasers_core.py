@@ -164,6 +164,8 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.on_vanguard_push.setEnabled(True)
             self.off_vanguard_push.setEnabled(True)
             self.vanguard_param_status_query_push.setEnabled(True)
+            self.thg_autotune_stop.setEnabled(True)
+            self.thg_autotune_start.setEnabled(True)
             # self.thg_autotune_start.setEnab
             self.vanguard_get_param_status_signal.emit()
 
@@ -506,6 +508,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.autotune_stop.setVisible(True)
             self.vanguard_change_SESAM.setVisible(True)
             self.vg_sesam_lbl_3.setVisible(True)
+            self.THG_change_position.setVisible(True)
 
 
 
@@ -536,3 +539,4 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
             self.autotune_stop.setVisible(False)
             self.vanguard_change_SESAM.setVisible(False)
             self.vg_sesam_lbl_3.setVisible(False)
+            self.THG_change_position.setVisible(False)
