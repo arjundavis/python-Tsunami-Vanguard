@@ -137,7 +137,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         self.vanguard.data_bits = bits_vanguard
         self.vanguard.parity = parity_vanguard
         self.vanguard.stop_bits = stop_bit_vanguard
-        self.vanguard.flow_control = flow_control_vanguard
+        # self.vanguard.flow_control = flow_control_vanguard
         self.vanguard.timeout = timeout_vanguard
         # self.vanguard.read_termination  = read_termination_vanguard 
         # self.vanguard.write_termination = write_termination_vanguard
