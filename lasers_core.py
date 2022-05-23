@@ -115,7 +115,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         bits_vanguard = 8
         parity_vanguard = visa.constants.Parity.none
         stop_bit_vanguard = visa.constants.StopBits.one
-        flow_control_vanguard = 0  # hardware control ?
+        # flow_control_vanguard = 0  # hardware control ?
         timeout_vanguard = 2000  # ms
         # read_termination_vanguard  = '\n'
         # write_termination_vanguard = read_termination_vanguard
