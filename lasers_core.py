@@ -278,7 +278,7 @@ class Lasers_GUI(QlasersWindow, Ui_lasersWindow):
         self.sesam_position.display(sesam)
 
         # sesam duration
-        bb = self.vanguard.query('READ:QW:HOUR?')
+        bb = self.vanguard.query('READ:QW:HOUR?')[:-4]
         self.sesam_position_duration.setText('SESAM spot used for %s' % bb[0:len(bb) - 3])
 
         # PCT warmed up ? 
